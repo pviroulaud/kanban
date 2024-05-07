@@ -15,7 +15,13 @@ namespace serviciosKanban.DTO
     {
         public DateTime fechaDesde { get; set; }
         public DateTime fechaHasta { get; set; }
-        public List<int> usuarioId { get; set; } = new List<int>();
+        public String usuarioId { get; set; } = "";
         public bool verCerrados { get; set; }
+    }
+    public class filtroReporteSemanal
+    {
+        public string semana { get; set; }        
+        public string usuarioId { get; set; } = "";
+        
     }
 }

@@ -16,11 +16,11 @@ namespace serviciosKanban.DTO
         public int? usuarioResponsableId { get; set; }
         public int incidenciaId { get; set; }
         public DateTime fechaCreacion { get; set; }
-        public string? semanaDeEjecucionPlanificada { get; set; }
+        public int? semanaDeEjecucionPlanificada { get; set; }
         public decimal? estimacion { get; set; }
         public decimal? ejecucion { get; set; }
         public string descripcion { get; set; }
-        public string? semanaDeEjecucionReal { get; set; }
+        public int? semanaDeEjecucionReal { get; set; }
         public int proyectoId { get; set; }
     }
 
@@ -42,9 +42,9 @@ namespace serviciosKanban.DTO
         public int incidenciaId { get; set; }
         //public DateTime fechaCreacion { get; set; }
         public string descripcion { get; set; }
-        public string? semanaDeEjecucionPlanificada { get; set; }
+        public int? semanaDeEjecucionPlanificada { get; set; }
         public decimal? estimacion { get; set; }
         public decimal? ejecucion { get; set; }
-        public string? semanaDeEjecucionReal { get; set; }
+        public int? semanaDeEjecucionReal { get; set; }
     }
 }

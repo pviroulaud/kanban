@@ -71,8 +71,8 @@ create table kbn_tarea(
     fechaCreacion datetime not null,
     estimacion decimal default 0,
     ejecucion decimal default 0,
-    semanaDeEjecucionPlanificada nvarchar(max),
-    semanaDeEjecucionReal nvarchar(max),
+    semanaDeEjecucionPlanificada int,
+    semanaDeEjecucionReal int,
     descripcion nvarchar,
 
     foreign key (tipoTareaId) references kbn_tipoTarea(id),

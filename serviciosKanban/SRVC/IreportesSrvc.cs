@@ -9,6 +9,7 @@ namespace serviciosKanban.SRVC
 {
     public interface IreportesSrvc
     {
+        reporteSemanaDTO planificacionSemana(string semana, List<int> usuarioId);
         reportePeriodoDTO horasPorDia(DateTime fechaDesde,DateTime fechaHasta,List<int> usuarioId, bool incluirEstadoCerrado);
     }
 }

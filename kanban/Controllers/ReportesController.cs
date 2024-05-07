@@ -23,6 +23,14 @@ namespace Kanban.Controllers
 
             
         }
+        
+        [HttpGet("EstimacionSemanalIndex")]
+        public IActionResult EstimacionSemanalIndex()
+        {
+
+            return View("EstimacionSemanal");
+        }
+
         [HttpGet("EjecucionHoras")]
         public IActionResult EjecucionHoras()
         {
@@ -35,14 +43,44 @@ namespace Kanban.Controllers
             return View();
         }
 
+        [HttpGet("EstimacionSemanal")]
+        [Authorize]
+        public IActionResult EstimacionSemanal(filtroReporteSemanal filtro)
+        {
+            List<int> usuarios = new List<int>();
+            List<string> sem = new List<string>();
 
+            if (filtro.usuarioId != null)
+            {
+                foreach (var item in filtro.usuarioId.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    usuarios.Add(Convert.ToInt32(item));
+                }
+            }
+            
+            //List<string> sem = new List<string>() { "2024-W19" };
+            var a =_servicioReportes.planificacionSemana(filtro.semana, usuarios);
+             
+            return Json(new { success = true, data = a });
+            //return Accepted();
+        }
 
         [HttpGet("EjecucionPorHora")]
         [Authorize]
         public IActionResult EjecucionPorHora(filtroReporte filtro)
         {
             List<int> usuarios = new List<int>();
-            var a=_servicioReportes.horasPorDia(filtro.fechaDesde,filtro.fechaHasta,filtro.usuarioId,filtro.verCerrados);
+           
+
+            if (filtro.usuarioId!=null)
+            {
+                foreach (var item in filtro.usuarioId.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    usuarios.Add(Convert.ToInt32(item));
+                }
+            }
+            
+            var a=_servicioReportes.horasPorDia(filtro.fechaDesde,filtro.fechaHasta,usuarios,filtro.verCerrados);
             return Json(new { success = true, data = a });
             //return Accepted();
         }

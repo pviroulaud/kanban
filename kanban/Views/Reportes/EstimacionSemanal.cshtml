@@ -1,6 +1,6 @@
 
 @{
-    ViewData["Title"] = "Reportes De Ejecucion de Horas";
+    ViewData["Title"] = "Reportes De Estimacion Semanal";
     
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -19,28 +19,17 @@
             <div class="card-body p-1" id="contenedorFiltros">
                 <div class="row">
 
-                    <div class="col-sm-2">
-                        <label class="col-sm-12 col-form-label" for="txtFechaDesde">Desde:</label>
-                        <input type="date" id="txtFechaDesde" class="form-control text-center">
+                    <div class="col-sm-4">
+                        <label class="col-sm-12 col-form-label" for="txtSemana">Semana:</label>
+                        <input type="week" id="txtSemana" class="form-control text-center">
                     </div>
-                    <div class="col-sm-2">
-                        <label class="col-sm-12 col-form-label" for="txtFechaHasta">Hasta:</label>
-                        <input type="date" id="txtFechaHasta" class="form-control text-center">
-                    </div>
-                    
-                    <div class="col-sm-2">
+                                        
+                    <div class="col-sm-4">
                         <label class="col-sm-12 col-form-label" for="ddlFiltroUsuarios">Usuario:</label>
                         <select multiple class="form-control " id="ddlFiltroUsuarios" style="width:100%">
                         </select>
                     </div>
-                    <div class="col-sm-2">
-                        <label class="col-sm-12 col-form-label" for="ddlCerrados">Ver Tareas Cerradas</label>
-                        <select class="form-control " id="ddlCerrados" style="width:100%">
-                            <option value="false">NO</option>
-                            <option value="true">SI</option>
-                        </select>
-                    </div>
-
+                   
                 </div>
                 <div class="col">
                     <button type="button" class="btn btn-primary float-end mt-1" id="btnGenerarReporte"><i class="fas fa-calendar me-1"></i>Generar Reporte</button>
@@ -61,26 +50,22 @@
                 <div class="card-body" id="datosFiltro">
                     <ul>
                         <li>
+                            <strong>Semana: </strong><span id="infoSemana">-</span>
+                        </li>
+                        <li>
                             <strong>Desde: </strong><span id="infoDesde">-</span>
                         </li>
                         <li>
                             <strong>Hasta: </strong><span id="infoHasta">-</span>
                         </li>
-                        <li>
-                            <strong>Total de Dias: </strong><span id="infoDias">-</span>
-                        </li>
-                        <li>
-                            <strong>Visualizando Tareas/Incidencias Cerradas: </strong><span id ="infoCerrados">-</span>
-                        </li>
+
                         <li>
                             <strong>Usuarios: </strong><span id="infoUsuarios">-</span>
                         </li>
                         <li>
-                            <strong>Total Horas Ejecucion: </strong><span id="infoEjecucion">-</span>
+                            <strong>Total Horas Estimacion: </strong><span id="infoEestimacion">-</span>
                         </li>
-                        <li>
-                            <strong>Total Horas Bloqueos: </strong><span id="infoBloqueo">-</span>
-                        </li>
+
                     </ul>
                 </div>
             </div>
@@ -96,16 +81,7 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-12">
-        <div class="card">
-            <div class="card-title">
-                <h5>Valores Diarios (Hs)</h5>
-            </div>
-            <div class="card-body" >
-                <canvas id="graficoDiario" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 487px;"></canvas>
-            </div>
-        </div>
-    </div>
+    
     <br />
     <div class="col-sm-12">
         <div class="card">
@@ -116,17 +92,14 @@
                 <table class="table text-center">
                     <thead>
                         <tr>
-                            <th>Fecha</th>
+                            <th>Semana</th>
 
                             <th>Incidencia</th>
-                            <th>Tarea</th>
-                            <th>Estado</th>
+                            <th>Tarea</th>                            
                             <th>Usuario</th>
-                            <th>Ejecucion</th>
-                            <th>Bloqueo</th>
-
-                            <th>Total Ejecucion</th>
-                            <th>Total Bloqueo</th>
+                            <th>Estimacion (Hs)</th>
+                            
+                            <th>Total Estimacion (Hs)</th>                            
                         </tr>
                     </thead>
                     <tbody id="tabla" class="text-center">
@@ -138,12 +111,12 @@
     </div>
 </div>
 
-<input type="hidden" value="@Url.Action("EjecucionPorHora", "Reportes")" id="ejecucionPorHora" />
+<input type="hidden" value="@Url.Action("EstimacionSemanal", "Reportes")" id="estimacionSemanal" />
 <input type="hidden" value="@Url.Action("listar", "Usuarios")" id="listarUsuarios" />
 @section Scripts{
     <script src="~/lib/chart.js/Chart.min.js"></script>
 
-    <script src="~/js/reportes/reporteEjecucion.js"></script>
+    <script src="~/js/reportes/reporteSemanal.js"></script>
    
     
 }

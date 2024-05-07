@@ -15,8 +15,8 @@ namespace entidadesKanban.modelo
         public DateTime fechaCreacion { get; set; }
         public decimal? estimacion { get; set; }
         public decimal? ejecucion { get; set; }
-        public string? semanaDeEjecucionPlanificada { get; set; }
-        public string? semanaDeEjecucionReal { get; set; }
+        public int? semanaDeEjecucionPlanificada { get; set; }
+        public int? semanaDeEjecucionReal { get; set; }
         public string? descripcion { get; set; }
 
         public virtual kbn_estado estado { get; set; } = null!;

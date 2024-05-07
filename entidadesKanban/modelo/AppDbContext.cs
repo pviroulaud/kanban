@@ -40,8 +40,6 @@ namespace entidadesKanban.modelo
         {
             modelBuilder.Entity<kbn_incidencia>(entity =>
             {
-                entity.Property(e => e.descripcion).HasMaxLength(1);
-
                 entity.Property(e => e.fechaCreacion).HasColumnType("datetime");
 
                 entity.HasOne(d => d.estado)
@@ -93,8 +91,6 @@ namespace entidadesKanban.modelo
 
             modelBuilder.Entity<kbn_tarea>(entity =>
             {
-                entity.Property(e => e.descripcion).HasMaxLength(1);
-
                 entity.Property(e => e.ejecucion)
                     .HasColumnType("decimal(18, 0)")
                     .HasDefaultValueSql("((0))");

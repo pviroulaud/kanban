@@ -1,26 +1,46 @@
 $(function () {
     var a = new Date();
-    $("#txtFechaDesde").val(a.toISOString().slice(0, a.toISOString().indexOf("T")));
-    $("#txtFechaHasta").val(a.toISOString().slice(0, a.toISOString().indexOf("T")));
+    $("#txtSemana").val(obtenerSemana(a));
+    
+
+   
+
     fillSelectUsuarios($('#listarUsuarios').val(), "ddlFiltroUsuarios", "contenedorFiltros", "Todos", "nombre");
 
     $('#btnGenerarReporte').click(function () {
-        obtenerReportePorDia()
+        obtenerReporteSemana()
     })
     
    
 });
 
 
-function obtenerReportePorDia() {
+function obtenerSemana(fecha) {
+    todaydate = fecha;
+
+    //find the year of the current date  
+    var oneJan = new Date(todaydate.getFullYear(), 0, 1);
+
+    // calculating number of days in given year before a given date   
+    var numberOfDays = Math.floor((todaydate - oneJan) / (24 * 60 * 60 * 1000));
+
+    // adding 1 since to current date and returns value starting from 0   
+    return fecha.getFullYear()+"-W"+ Math.ceil((todaydate.getDay() + 1 + numberOfDays) / 7);
+}
+
+function obtenerReporteSemana() {
+    
+    var arr = "";
+    for (var n = 0; n<$('#ddlFiltroUsuarios').val().length; n++) {
+        arr += $('#ddlFiltroUsuarios').val()[n] + ",";
+    }
+    
     $.ajax({
         type: 'GET',
-        url: $("#ejecucionPorHora").val(),
+        url: $("#estimacionSemanal").val(),
         data: {
-            fechaDesde:$('#txtFechaDesde').val(),
-            fechaHasta:$('#txtFechaHasta').val(),
-            usuarioId:$('#ddlFiltroUsuarios').val(),
-            verCerrados:$('#ddlCerrados').val()
+            semana:$('#txtSemana').val(),            
+            usuarioId:arr
         },
         dataType: 'json',
         crossDomain: true,
@@ -34,24 +54,64 @@ function obtenerReportePorDia() {
         hideSpinner();
 
         if (result.success) {
-            $('#detalleReporte').html(JSON.stringify(result.data));
-            var etiquetas = [];
-            var ejecuciones = [];
-            var bloqueos = [];
-            for (var n = 0; n < result.data.detalleDiario.length; n++) {
-                etiquetas.push(result.data.detalleDiario[n].fecha)
-                ejecuciones.push(result.data.detalleDiario[n].totalEjecucion)
-                bloqueos.push(result.data.detalleDiario[n].totalBloqueo)
+            $('#infoSemana').html($("#txtSemana").val().slice($("#txtSemana").val().indexOf("-W"),2));
+            $('#infoDesde').html(result.data.fechaDesde);
+            $('#infoHasta').html(result.data.fechaHasta);
+            
+            $('#infoEestimacion').html(result.data.estimacionTotal);            
+           
+            var us = "";
+            if ($('#ddlFiltroUsuarios').val().length == 0) {
+                us = "TODOS"
             }
+            else {
+                for (var n = 0; n < $('#ddlFiltroUsuarios').val().length; n++) {
+                    us += buscarEnSelect('ddlFiltroUsuarios', $('#ddlFiltroUsuarios').val()[n]) + ", "
+                }
+            }            
+            $('#infoUsuarios').html(us);
 
-            graficoBarrasApiladas('graficoDiario', etiquetas, bloqueos, ejecuciones,null)
-            graficoTorta('graficoTotales', ['Ejecucion', 'Bloqueo'],
-                [result.data.totalEjecucion, result.data.totalBloqueo],
+            detalleReporte('detalleReporte', result.data)         
+            
+            graficoTorta('graficoTotales', ['Estimado', 'Sin Asignacion'],
+                [result.data.estimacionTotal, 80],
                 ['#00a65a', '#f56954'])
         } else {
             Swal.fire("Información", "No se pudo obtener la tarea.", "error");
         }
     });
+}
+
+function detalleReporte(contenedor, data) {
+    var _html = '';  
+
+    for (var j = 0; j < data.detalle.length; j++) {
+        _html += '<tr>'
+        if (j == 0) {
+            _html += '  <td style="vertical-align: middle;" rowspan="' + data.detalle.length + '">' + data.semanaEjecucionPlanificada + '</td>'
+        }
+            
+
+        _html += '  <td>' + data.detalle[j].nombreIncidencia + '</td>'
+        _html += '  <td>' + data.detalle[j].nombreTarea + '</td>'        
+        _html += '  <td>' + buscarEnSelect('ddlFiltroUsuarios', data.detalle[j].usuarioResponsableId) + '</td>'
+        _html += '  <td>' + data.detalle[j].estimacion + '</td>'
+        
+
+        if (j == 0) {
+            _html += '  <td style="vertical-align: middle;" rowspan="' + data.detalle.length + '">' + data.estimacionTotal + '</td>'            
+        }
+            
+        _html += '</tr>'
+    }
+
+        
+        
+    
+    $('#tabla').html(_html)
+    //rowspan="' + data.detalleDiario[n].tareas.length + '"
+
+    //$('#' + contenedor).html(JSON.stringify(data));
 }
 
 function graficoBarrasApiladas(idCanvasConenedor, etiquetas, datosA,datosB, colores) {
@@ -178,3 +238,14 @@ function fillSelectUsuarios(url, selectId, modalId, emptyOpt, textProp) {
     });
 }
 
+function buscarEnSelect(selectId, valueBuscar) {
+    var opt = $('#' + selectId + ' option');
+    var ret = undefined;
+    for (var n = 0; n < opt.length; n++) {
+        if (opt[n].value == valueBuscar) {
+            ret = opt[n].text;
+            break;
+        }
+    }
+    return ret;
+}

@@ -36,21 +36,23 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Tareas" asp-action="Index">Tareas</a>
                             </li>
                             <li class="nav-item dropdown ">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Reportes
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end " aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Reportes" asp-action="EjecucionHoras">Ejecucion Horas Por Dia</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Reportes" asp-action="EstimacionSemanalIndex">Planificacion Semanal</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Reportes" asp-action="EjecucionHoras">Ejecucion Horas</a></li>
                                 </ul>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Proyectos" asp-action="Index">Proyectos</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Index">Usuarios</a>
-                            </li>
-
-
+                        <li class="nav-item dropdown ">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Administracion
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end " aria-labelledby="navbarDropdown2">
+                                <li><a class="nav-link text-dark" asp-area="" asp-controller="Proyectos" asp-action="Index">Proyectos</a></li>
+                                <li><a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Index">Usuarios</a></li>
+                            </ul>
+                        </li>
                         </ul>
                         <ul class="navbar-nav ml-auto">
 
@@ -117,6 +119,9 @@
                                 <div class="col-sm-12">
                                     <input type="date" id="fechaTiempo" class="form-control text-center">
                                 </div>
+                                <div id="validfechaTiempo" class="invalid-feedback" style="display:none">
+                                    Este campo es obligatorio
+                                </div>
                             </div>
                         </div>
                         <div class="row mb-2 ">
@@ -124,6 +129,9 @@
                                 <label class="col-sm-12 col-form-label text-center" for="txtTiempo">Ejecucion (Hs)</label>
                                 <div class="col-sm-12">
                                     <input type="text" id="txtTiempo" class="form-control text-center">
+                                </div>
+                                <div id="validtxtTiempo" class="invalid-feedback" style="display:none">
+                                    Este campo es obligatorio
                                 </div>
                             </div>
                         </div>
@@ -134,6 +142,9 @@
                             </div>
                             <div class="card-body">
                                 <textarea id="txtDescripcionTiempo" class="form-control" style="width:100%" rows="7"></textarea>
+                            </div>
+                            <div id="validtxtDescripcionTiempo" class="invalid-feedback" style="display:none">
+                                Este campo es obligatorio
                             </div>
                         </div>
                     </div>

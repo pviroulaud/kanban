@@ -203,8 +203,8 @@ function guardarTarea() {
                 descripcion: $('#txtDescripcionTarea').val(),
                 estimacion: $('#txtEstimacionTarea').val(),
                 ejecucion: $('#txtEjecucionTarea').val(),
-                semanaDeEjecucionPlanificada: $('#txtsemanaDeEjecucionPlanificadaTarea').val(),
-                semanaDeEjecucionReal: $('#txtsemanaDeEjecucionRealTarea').val()
+                semanaDeEjecucionPlanificada: $('#txtsemanaDeEjecucionPlanificadaTarea').val().replaceAll("-W", ""),
+                semanaDeEjecucionReal: $('#txtsemanaDeEjecucionRealTarea').val().replaceAll("-W", "")
 
             };
 
@@ -244,8 +244,8 @@ function guardarTarea() {
                 descripcion: $('#txtDescripcionTarea').val(),
                 estimacion: $('#txtEstimacionTarea').val(),
                 ejecucion: $('#txtEjecucionTarea').val(),
-                semanaDeEjecucionPlanificada: $('#txtsemanaDeEjecucionPlanificadaTarea').val(),
-                semanaDeEjecucionReal: $('#txtsemanaDeEjecucionRealTarea').val()
+                semanaDeEjecucionPlanificada: $('#txtsemanaDeEjecucionPlanificadaTarea').val().replaceAll("-W", ""),
+                semanaDeEjecucionReal: $('#txtsemanaDeEjecucionRealTarea').val().replaceAll("-W", "")
 
             };
 
@@ -291,8 +291,8 @@ function completarFormTarea(datos) {
     $('#ddlResponsableTarea').val(datos.usuarioResponsableId).change();
     $('#txtInformadorTarea').val(buscarEnSelect('ddlResponsableTarea', datos.usuarioCreadorId));
     $('#txtDescripcionTarea').val(datos.descripcion);
-    $('#txtsemanaDeEjecucionPlanificadaTarea').val(datos.semanaDeEjecucionPlanificada);
-    $('#txtsemanaDeEjecucionRealTarea').val(datos.semanaDeEjecucionReal);
+    if (datos.semanaDeEjecucionPlanificada != null) $('#txtsemanaDeEjecucionPlanificadaTarea').val(datos.semanaDeEjecucionPlanificada.toString().slice(0, 4) + "-W" + datos.semanaDeEjecucionPlanificada.toString().slice(4));
+    if (datos.semanaDeEjecucionReal != null) $('#txtsemanaDeEjecucionRealTarea').val(datos.semanaDeEjecucionReal.toString().slice(0, 4) + "-W" + datos.semanaDeEjecucionReal.toString().slice(4));
     $('#txtEstimacionTarea').val(datos.estimacion);
     $('#txtEjecucionTarea').val(datos.ejecucion);
     //$('#ddlIncidenciaTarea').val(datos.incidenciaId);
