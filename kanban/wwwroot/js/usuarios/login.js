@@ -24,7 +24,7 @@ function login(){
             data: data,
             dataType: 'json'
         }).done(function (result) {
-            hideSpinner();
+            hideSpinner();borrarSomee();
             if (result.success) {
                 clearFormLogin();
                 guardarCredenciales(result.data)

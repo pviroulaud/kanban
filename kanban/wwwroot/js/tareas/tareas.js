@@ -108,7 +108,7 @@ function grillaTareas() {
             }
         ],
         drawCallback: function (settings, json) {
-            hideSpinner();
+            hideSpinner();borrarSomee();
             $(".editData").click(function () {
                 obtenerTarea($(this).attr('data'));
             });
@@ -221,7 +221,7 @@ function guardarTarea() {
                     }
                 },
             }).done(function (result) {
-                hideSpinner();
+                hideSpinner();borrarSomee();
                 clearFormTarea();
                 if (result.success) {
 
@@ -262,7 +262,7 @@ function guardarTarea() {
                     }
                 },
             }).done(function (result) {
-                hideSpinner();
+                hideSpinner();borrarSomee();
                 clearFormTarea();
                 if (result.success) {
 
@@ -317,7 +317,7 @@ function obtenerTarea(idTarea) {
             }
         },
     }).done(function (result) {
-        hideSpinner();
+        hideSpinner();borrarSomee();
         clearFormTarea();
         if (result.success) {
 
@@ -346,7 +346,7 @@ function fillSelectUsuarios(url, selectId, modalId, emptyOpt, textProp) {
             }
         },
     }).done(function (result) {
-        hideSpinner();
+        hideSpinner();borrarSomee();
 
         if (true) {
             $("#" + selectId).empty();

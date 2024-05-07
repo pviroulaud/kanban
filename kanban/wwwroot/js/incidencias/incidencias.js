@@ -68,7 +68,7 @@ function fillSelectUsuarios(url, selectId,modalId,emptyOpt,textProp ) {
                     }                    
                 },            
     }).done(function (result) {
-        hideSpinner();
+        hideSpinner();borrarSomee();
 
         if (true) {
             $("#" + selectId).empty();
@@ -160,7 +160,7 @@ function grillaInsidencias(){
                 }
             ],
             drawCallback: function (settings, json) {
-                hideSpinner();
+                hideSpinner();borrarSomee();
                 $(".editData").click(function () {
                     obtenerIncidencia($(this).attr('data'));
                 });            
@@ -257,7 +257,7 @@ function guardarIncidencia(){
                     }                    
                 },            
             }).done(function (result) {
-                hideSpinner();
+                hideSpinner();borrarSomee();
                 clearFormIncidencia();
                 if (result.success) {
                     
@@ -293,7 +293,7 @@ function guardarIncidencia(){
                     }
                 },
             }).done(function (result) {
-                hideSpinner();
+                hideSpinner();borrarSomee();
                 clearFormIncidencia();
                 if (result.success) {
 
@@ -383,7 +383,7 @@ function obtenerIncidencia(idIncidencia){
             }                    
         },            
     }).done(function (result) {
-        hideSpinner();
+        hideSpinner();borrarSomee();
         clearFormIncidencia();
         if (result.success) {
             

@@ -6,6 +6,17 @@ var globalSpinner=[];
 function showSpinner() { $("#spinner").show(); globalSpinner.push(1); }
 function hideSpinner() { globalSpinner.pop(); if (globalSpinner.length == 0) { $("#spinner").hide(); } }
 
+
+function borrarSomee() {
+    if (document.body.innerHTML.includes('Web hosting by Somee.com')) {
+        document.body.innerHTML = document.body.innerHTML.replaceAll('<center><a href="http://somee.com">Web hosting by Somee.com</a></center>', '')
+        document.body.innerHTML = document.body.innerHTML.replaceAll('<div onmouseover="S_ssac();" onmouseout="D_ssac();" style="position: fixed; z-index: 2147483647; left: 0px; bottom: 0px; height: 65px; right: 0px; display: block; width: 100%; background-color: transparent; margin: 0px; padding: 0px;">        <div style="width: 100%; color: White; font-family: &quot;Helvetica Neue&quot;, &quot;Lucida Grande&quot;, &quot;Segoe UI&quot;, Arial, Helvetica, Verdana, sans-serif; font-size: 11pt;">            <div style="margin-right: auto; margin-left: auto; display: table;  padding:9px; font-size:13pt;">                <a href="http://somee.com/VirtualServer.aspx" style=" text-decoration: none; color:White; margin-right:6px; margin-left:6px;">Hosted Windows Virtual Server. 2.5GHz CPU, 2GB RAM, 60GB SSD. Try it now for $1!</a>             </div>            <div style="margin-right: auto; margin-left: auto; display: table; font-size: 9pt; ">                <a href="http://somee.com" style=" text-decoration: none; color:White; margin-right:6px; margin-left:6px; font-size: 10pt;">Web hosting by Somee.com</a>            </div>        </div>    </div>', '')
+        document.body.innerHTML = document.body.innerHTML.replaceAll('<div style="opacity: 0.9; z-index: 2147483647; position: fixed; left: 0px; bottom: 0px; height: 65px; right: 0px; display: block; width: 100%; background-color: #202020; margin: 0px; padding: 0px;">    </div>', '')
+        document.body.innerHTML = document.body.innerHTML.replaceAll('<div style="height: 65px;">    </div>', '')
+
+    }
+}
+
 function getData(url,data, callback) {
     showSpinner();
     $.ajax({
@@ -22,7 +33,7 @@ function getData(url,data, callback) {
                     }                    
                 },            
     }).done(function (result) {
-        hideSpinner();
+        hideSpinner();borrarSomee();borrarSomee();
         if (result.success) {
             callback(result.data);
         } else {
@@ -46,7 +57,7 @@ function fillSelect(url, selectId,modalId,emptyOpt,textProp ) {
                     }                    
                 },            
     }).done(function (result) {
-        hideSpinner();
+        hideSpinner();borrarSomee();borrarSomee();
         if (result.success) {
             $("#" + selectId).empty();
             if (emptyOpt != null && emptyOpt != "")

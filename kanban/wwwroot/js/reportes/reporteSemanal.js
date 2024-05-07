@@ -51,7 +51,7 @@ function obtenerReporteSemana() {
             }
         },
     }).done(function (result) {
-        hideSpinner();
+        hideSpinner();borrarSomee();borrarSomee();
 
         if (result.success) {
             $('#infoSemana').html($("#txtSemana").val().slice($("#txtSemana").val().indexOf("-W"),2));
@@ -220,7 +220,7 @@ function fillSelectUsuarios(url, selectId, modalId, emptyOpt, textProp) {
             }
         },
     }).done(function (result) {
-        hideSpinner();
+        hideSpinner();borrarSomee();borrarSomee();
 
         if (true) {
             $("#" + selectId).empty();

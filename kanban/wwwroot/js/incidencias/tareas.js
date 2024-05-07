@@ -91,7 +91,7 @@ function guardarTarea() {
                     }
                 },
             }).done(function (result) {
-                hideSpinner();
+                hideSpinner();borrarSomee();
                 clearFormTarea();
                 if (result.success) {
 
@@ -132,7 +132,7 @@ function guardarTarea() {
                     }
                 },
             }).done(function (result) {
-                hideSpinner();
+                hideSpinner();borrarSomee();
                 clearFormTarea();
                 if (result.success) {
 
@@ -178,7 +178,7 @@ function obtenerTarea(idTarea) {
             }
         },
     }).done(function (result) {
-        hideSpinner();
+        hideSpinner();borrarSomee();borrarSomee();
         clearFormTarea();
         if (result.success) {
 

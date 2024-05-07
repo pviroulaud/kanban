@@ -41,7 +41,7 @@ function obtenerReportePorDia() {
             }
         },
     }).done(function (result) {
-        hideSpinner();
+        hideSpinner();borrarSomee();borrarSomee();
 
         if (result.success) {
             $('#infoDesde').html($("#txtFechaDesde").val());
@@ -228,8 +228,8 @@ function fillSelectUsuarios(url, selectId, modalId, emptyOpt, textProp) {
             }
         },
     }).done(function (result) {
-        hideSpinner();
-
+        hideSpinner();borrarSomee();borrarSomee();
+        
         if (true) {
             $("#" + selectId).empty();
             if (emptyOpt != null && emptyOpt != "")

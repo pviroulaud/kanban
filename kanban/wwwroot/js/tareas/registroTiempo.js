@@ -43,7 +43,7 @@ function guardarRegistro() {
                     }
                 },
             }).done(function (result) {
-                hideSpinner();
+                hideSpinner();borrarSomee();
                 clearFormTiempo();
                 if (result.success) {
 

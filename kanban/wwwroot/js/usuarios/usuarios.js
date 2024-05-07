@@ -76,7 +76,7 @@ function saveFormUsuario(){
                     }                    
                 },            
             }).done(function (result) {
-                hideSpinner();
+                hideSpinner();borrarSomee();
                 if (result.success) {
                     clearFormUsuario();
                     $('#modal-usuario').modal('hide');
@@ -107,7 +107,7 @@ function saveFormUsuario(){
                     }                    
                 },            
             }).done(function (result) {
-                hideSpinner();
+                hideSpinner();borrarSomee();
                 if (result.success) {
                     clearFormUsuario();
                     $('#modal-usuario').modal('hide');
@@ -157,7 +157,7 @@ function obtenerUsuario(id) {
                     }                    
                 },            
     }).done(function (result) {
-        hideSpinner();
+        hideSpinner();borrarSomee();
         if (result.success) {                    
             clearFormUsuario();
             completarFormUsuario(result.data);
@@ -194,7 +194,7 @@ function eliminarUsuario(id) {
                     }                    
                 },            
             }).done(function (result) {
-                hideSpinner();
+                hideSpinner();borrarSomee();
                 if (result.success) {
                     $('#dt-dataUsuarios').DataTable().ajax.reload();
                     Swal.fire("Información", "El Usuario fue eliminado correctamente.", "success");

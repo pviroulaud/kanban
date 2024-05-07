@@ -44,7 +44,7 @@ $(function () {
             },
         }],
         drawCallback: function (settings, json) {
-            hideSpinner();
+            hideSpinner();borrarSomee();
             $(".editData").click(function () {
                 obtenerProyecto($(this).attr('data'));
             });
@@ -82,7 +82,7 @@ function saveFormProyecto(){
                     }                    
                 },            
             }).done(function (result) {
-                hideSpinner();
+                hideSpinner();borrarSomee();
                 if (result.success) {
                     clearFormProyecto();
                     $('#modal-proyecto').modal('hide');
@@ -106,7 +106,7 @@ function saveFormProyecto(){
                 data: data,
                 dataType: 'json'
             }).done(function (result) {
-                hideSpinner();
+                hideSpinner();borrarSomee();
                 if (result.success) {
                     clearFormProyecto();
                     $('#modal-proyecto').modal('hide');
@@ -156,7 +156,7 @@ function obtenerProyecto(id) {
                     }                    
                 },            
     }).done(function (result) {
-        hideSpinner();
+        hideSpinner();borrarSomee();
         if (result.success) {                    
             clearFormProyecto();
             completarFormProyecto(result.data);
@@ -193,7 +193,7 @@ function eliminarProyecto(id) {
                     }                    
                 },            
             }).done(function (result) {
-                hideSpinner();
+                hideSpinner();borrarSomee();
                 if (result.success) {
                     $('#dt-dataProyectos').DataTable().ajax.reload();
                     Swal.fire("Información", "El proyecto fue eliminado correctamente.", "success");
