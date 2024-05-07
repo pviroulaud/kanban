@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "entidadesKanban", "entidadesKanban\entidadesKanban.csproj", "{81DC890F-2F46-47CD-91AA-B12CCF2A052F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kanban", "Kanban\Kanban.csproj", "{DAC20652-F767-42C3-BA59-6A170CCB8DA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kanban", "softtekKanban\Kanban.csproj", "{DAC20652-F767-42C3-BA59-6A170CCB8DA1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "serviciosKanban", "serviciosKanban\serviciosKanban.csproj", "{5A5983C6-3D37-4869-A4AD-3969150B6DFB}"
 EndProject
