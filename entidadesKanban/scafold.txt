@@ -1,0 +1,4 @@
+dotnet tool install --global dotnet-ef --version 7.0.7
+dotnet ef dbcontext scaffold "Server=LSTKBA229283\MSSQLSERVER1;Database=kanban;persist security info=True;user id=sa1;password=28KK3mq11;" Microsoft.EntityFrameworkCore.SqlServer -o modelo -c "AppDbContext" --use-database-names --no-pluralize -f
+
+Scaffold-DbContext "Server=DELL-PABLO\sqlexpress;Database=kanban;persist security info=True;user id=sa;password=ade@D47@3a53;;multipleactiveresultsets=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir modelo -Context "AppDbContext" -UseDatabaseNames -NoPluralize -force

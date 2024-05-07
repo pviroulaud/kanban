@@ -1,0 +1,213 @@
+﻿@{
+    ViewData["Title"] = "Tareas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-header p-2">
+                Filtros
+            </div>
+            <div class="card-body p-1"  id="contenedorFiltros">
+                <div class="row">
+                    
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 col-form-label" for="ddlFiltroProyectos">Proyecto:</label>
+                        <select multiple class="form-control filtroBusqueda" id="ddlFiltroProyectos" style="width:100%">
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 col-form-label" for="ddlFiltroIncidencia">Incidencia:</label>
+                        <select multiple class="form-control filtroBusqueda" id="ddlFiltroIncidencia" style="width:100%">
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 col-form-label" for="ddlFiltroTipoTarea">Tipo de Tarea:</label>
+                        <select multiple class="form-control filtroBusqueda" id="ddlFiltroTipoTarea" style="width:100%">
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 col-form-label" for="ddlFiltroEstadoTarea">Estado de Tarea:</label>
+                        <select multiple class="form-control filtroBusqueda" id="ddlFiltroEstadoTarea" style="width:100%">
+                        </select>
+                    </div>                    
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 col-form-label" for="ddlFiltroUsuarios">Usuario:</label>
+                        <select multiple class="form-control filtroBusqueda" id="ddlFiltroUsuarios" style="width:100%">
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <button type="button" class="btn btn-primary float-end mt-1" id="btnNuevaTarea"><i class="fas fa-plus-circle me-1"></i>Nueva Tarea</button>
+        <table id="dt-dataTareas" class="display compact" style="width:100%">
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="modal-tarea" aria-labelledby="modalLbl" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="dialog" id="dialogTarea">
+        <div class="modal-content">
+            <div class="modal-header pt-2 pb-2">
+                <h4 class="modal-title" id="modalLbl"> Tarea </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body pt-2 pb-2">
+                <div class="row">
+                    <div class="col-sm-9" id="informacionBasicaTarea">
+                        <div class="mb-2">
+                            <label class="col-sm-3 col-form-label" for="ddlProyectoTarea">Proyecto</label>
+                            <div class="col-sm-12">
+                                <select class="form-control" id="ddlProyectoTarea" style="width:100%">
+                                </select>
+                                <div id="validddlProyectoTarea" class="invalid-feedback" style="display:none">
+                                    Este campo es obligatorio
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <label class="col-sm-3 col-form-label" for="ddlIncidenciaTarea">Incidencia</label>
+                            <div class="col-sm-12">
+                                <select class="form-control" id="ddlIncidenciaTarea" style="width:100%">
+                                </select>
+                                <div id="validddlIncidenciaTarea" class="invalid-feedback" style="display:none">
+                                    Este campo es obligatorio
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-2">
+                            <input type="hidden" id="idTarea">
+                            <label class="col-sm-3 col-form-label" for="txtNombreTarea">Nombre:</label>
+                            <div class="col-sm-12">
+                                <input type="hidden" id="idTarea">
+                                <input type="text" id="txtNombreTarea" class="form-control" maxlength="50" required>
+                                <div id="validtxtNombreTarea" class="invalid-feedback" style="display:none">
+                                    Este campo es obligatorio
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-2">
+                            <label class="col-sm-3 col-form-label" for="ddlTipoTarea">Tipo</label>
+                            <div class="col-sm-12">
+                                <select class="form-control" id="ddlTipoTarea" style="width:100%">
+                                </select>
+                                <div id="validddlTipoTarea" class="invalid-feedback" style="display:none">
+                                    Este campo es obligatorio
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mb-2">
+                            <div class="card-header">
+                                <strong>Descripci&oacute;n</strong>
+                            </div>
+                            <div class="card-body">
+                                <textarea id="txtDescripcionTarea" class="form-control" style="width:100%" rows="7"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3" id="informacionAdicionalTarea">
+                        <div class="mb-2">
+                            <div class="col-sm-12">
+                                <label class="col-sm-3 col-form-label" for="txtInformadorTarea">Usuario Informador</label>
+                                <div class="col-sm-12">
+                                    <input type="text" id="txtInformadorTarea" class="form-control" readonly>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <label class="col-sm-3 col-form-label" for="ddlResponsableTarea">Usuario Responsable</label>
+                                <div class="col-sm-12">
+                                    <select class="form-control" id="ddlResponsableTarea" style="width:100%">
+                                    </select>
+                                    <div id="validddlResponsableTarea" class="invalid-feedback" style="display:none">
+                                        Este campo es obligatorio
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-2">
+                            <label class="col-sm-3 col-form-label" for="ddlEstadoTarea">Estado</label>
+                            <div class="col-sm-12">
+                                <select class="form-control" id="ddlEstadoTarea" style="width:100%">
+                                </select>
+                                <div id="validddlEstadoTarea" class="invalid-feedback" style="display:none">
+                                    Este campo es obligatorio
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2 ">
+                            <div class="col-sm-6">
+                                <label class="col-sm-12 col-form-label text-center" for="txtEstimacionTarea">Estimacion (Hs)</label>
+                                <div class="col-sm-12">
+                                    <input type="text" id="txtEstimacionTarea" class="form-control text-center" >
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-12 col-form-label text-center" for="txtEjecucionTarea">Ejecucion (Hs)</label>
+                                <div class="col-sm-12">
+                                    <input type="text" id="txtEjecucionTarea" class="form-control text-center" style="cursor:pointer;" onclick="cargarDatosTarea();" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2 ">
+                            <div class="col-sm-12">
+                                <label class="col-sm-12 col-form-label text-center" for="txtsemanaDeEjecucionPlanificadaTarea">Semana de ejecuci&oacute;n planificada</label>
+                                <div class="col-sm-12">
+                                    <input type="week" id="txtsemanaDeEjecucionPlanificadaTarea" class="form-control text-center">
+                                </div>
+                            </div>                           
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <label class="col-sm-12 col-form-label text-center" for="txtsemanaDeEjecucionRealTarea">Semana de ejecuci&oacute;n Real</label>
+                                <div class="col-sm-12">
+                                    <input type="week" id="txtsemanaDeEjecucionRealTarea" class="form-control text-center">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              
+            </div>
+            <div class="modal-footer pt-2 pb-2">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button id="btnGuardarTarea" type="button" class="btn btn-primary">Guardar</button>
+            </div>         
+        </div>
+    </div>
+</div>
+
+<input type="hidden" value="@Url.Action("listarIncidenciasProyecto", "Home")" id="listarIncidenciasProyecto" />
+<input type="hidden" value="@Url.Action("listarIncidencias", "Home")" id="listarIncidencias" />
+<input type="hidden" value="@Url.Action("listarProyectos", "Home")" id="listarProyectos" />
+<input type="hidden" value="@Url.Action("listarTipoIncidencia", "Home")" id="listarTipoIncidencia" />
+
+<input type="hidden" value="@Url.Action("listarEstados", "Home")" id="listarEstados" />
+<input type="hidden" value="@Url.Action("listar", "Usuarios")" id="listarUsuarios" />
+
+<input type="hidden" value="@Url.Action("nuevaTarea", "Home")" id="nuevaTarea" />
+<input type="hidden" value="@Url.Action("obtenerTarea", "Home")" id="obtenerTarea" />
+<input type="hidden" value="@Url.Action("actualizarTarea", "Home")" id="actualizarTarea" />
+<input type="hidden" value="@Url.Action("listarTipoTarea", "Home")" id="listarTipoTarea" />
+<input type="hidden" value="@Url.Action("listar", "Tareas")" id="listarTareas" />
+
+@section Scripts{
+    <script src="~/js/incidencias/incidencias.js"></script>
+    <script src="~/js/tareas/tareas.js"></script>
+    <script src="~/js/tareas/registroTiempo.js"></script>
+
+}

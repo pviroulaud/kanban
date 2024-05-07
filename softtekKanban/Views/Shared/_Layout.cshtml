@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Kanban</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/lib/datatable/css/jquery.datatables.min.css" rel="stylesheet" />
+    <link href="~/lib/datatable/css/buttons.datatables.min.css" rel="stylesheet" />
+    <link href="~/lib/datatable/css/scroller.datatables.min.css" rel="stylesheet" />   
+    <link href="~/lib/font-awesome/css/fontawesome.min.css" rel="stylesheet" />    
+    <link href="~/lib/font-awesome/css/regular.min.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/solid.min.css" rel="stylesheet" />    
+    <link href="~/css/select2.min.css" rel="stylesheet" />
+    <link href="~/css/sweetalert2.bundle.css" rel="stylesheet" />
+    <link href="~/css/jquery-ui.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Kanban.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Kanban</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Incidencias</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Tareas" asp-action="Index">Tareas</a>
+                            </li>
+                            <li class="nav-item dropdown ">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Reportes
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end " aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Reportes" asp-action="EjecucionHoras">Ejecucion Horas Por Dia</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Proyectos" asp-action="Index">Proyectos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Index">Usuarios</a>
+                            </li>
+
+
+                        </ul>
+                        <ul class="navbar-nav ml-auto">
+
+                        <li class="nav-item dropdown ">
+                                <a id ="nombreUsuario" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Usuario
+                                </a>
+                            <ul class="dropdown-menu dropdown-menu-end " aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="#">Preferencias</a></li>                                
+                                    <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Login" asp-action="Index" onclick="cerrarSesion();">Cerrar Sesion</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 - Kanban - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    <div class="modal fade" tabindex="-1" id="modal-tiempo" aria-labelledby="modalLbl" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="dialog" id="dialogTiempo">
+            <div class="modal-content">
+                <div class="modal-header pt-2 pb-2">
+                    <h4 class="modal-title" id="modalLbl"> Registro de Tiempo </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body pt-2 pb-2">
+                    <div class="col-sm-12" id="informacionBasicaTiempo">
+
+                        <div class="mb-2">
+                            <label class="col-sm-3 col-form-label" for="txtNombreTareaTiempo">Nombre:</label>
+                            <div class="col-sm-12">
+                                <input type="hidden" id="idTareaTiempo">
+                                <input type="text" id="txtNombreTareaTiempo" class="form-control" maxlength="50" required readonly>
+                            </div>
+                        </div>
+
+                        <div class="mb-2">
+                            <label class="col-sm-3 col-form-label" for="ddlEstadoTareaTiempo">Estado</label>
+                            <div class="col-sm-12">
+                                <select class="form-control" id="ddlEstadoTareaTiempo" style="width:100%">
+                                </select>
+                                <div id="validddlEstadoTareaTiempo" class="invalid-feedback" style="display:none">
+                                    Este campo es obligatorio
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2 ">
+                            <div class="col-sm-12">
+                                <label class="col-sm-12 col-form-label text-center" for="fechaTiempo">Fecha</label>
+                                <div class="col-sm-12">
+                                    <input type="date" id="fechaTiempo" class="form-control text-center">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2 ">
+                            <div class="col-sm-12">
+                                <label class="col-sm-12 col-form-label text-center" for="txtTiempo">Ejecucion (Hs)</label>
+                                <div class="col-sm-12">
+                                    <input type="text" id="txtTiempo" class="form-control text-center">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-2">
+                            <div class="card-header">
+                                <strong>Descripci&oacute;n</strong>
+                            </div>
+                            <div class="card-body">
+                                <textarea id="txtDescripcionTiempo" class="form-control" style="width:100%" rows="7"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer pt-2 pb-2">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button id="btnGuardarTiempo" type="button" class="btn btn-primary">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" value="@Url.Action("registrarTiempo", "Tareas")" id="registrarTiempo" />
+
+    <div id="spinner" class="overlay" style="display:none">
+        <div  class="d-flex justify-content-center" style="top:45%">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Cargando por favor espere...</span>
+            </div>
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/datatable/jquery.datatables.min.js"></script>
+    <script src="~/lib/datatable/datatables.datatables.min.js"></script>
+    <script src="~/lib/datatable/scroller.datatables.min.js"></script>
+    <script src="~/lib/datatable/buttons.datatables.min.js"></script>
+    <script src="~/js/sweetalert2.bundle.js"></script>
+    <script src="~/js/select2.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery-ui.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        $(function () {
+            document.getElementById('nombreUsuario').innerText = sessionStorage.getItem("nUsuario")
+           
+        });
+
+        function cerrarSesion(){
+            sessionStorage.clear();
+            
+        }
+    </script>
+    
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

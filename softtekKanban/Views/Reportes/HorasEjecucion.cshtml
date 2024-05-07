@@ -1,0 +1,109 @@
+
+@{
+    ViewData["Title"] = "Reportes De Ejecucion de Horas";
+    
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-header p-2">
+                Filtros
+            </div>
+            <div class="card-body p-1" id="contenedorFiltros">
+                <div class="row">
+
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 col-form-label" for="txtFechaDesde">Desde:</label>
+                        <input type="date" id="txtFechaDesde" class="form-control text-center">
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 col-form-label" for="txtFechaHasta">Hasta:</label>
+                        <input type="date" id="txtFechaHasta" class="form-control text-center">
+                    </div>
+                    
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 col-form-label" for="ddlFiltroUsuarios">Usuario:</label>
+                        <select multiple class="form-control " id="ddlFiltroUsuarios" style="width:100%">
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 col-form-label" for="ddlCerrados">Ver Tareas Cerradas</label>
+                        <select class="form-control " id="ddlCerrados" style="width:100%">
+                            <option value="false">NO</option>
+                            <option value="true">SI</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-primary float-end mt-1" id="btnGenerarReporte"><i class="fas fa-calendar me-1"></i>Generar Reporte</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div >
+    <br />
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <div class="card">
+                <div class="card-title">
+                    <h5>Datos del Reporte</h5>
+                </div>
+                <div class="card-body" id="datosFiltro">
+
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <div class="card">
+                <div class="card-title">
+                    <h5>Totales Periodo (Hs)</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="graficoTotales" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 487px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-title">
+                <h5>Valores Diarios (Hs)</h5>
+            </div>
+            <div class="card-body" >
+                <canvas id="graficoDiario" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 487px;"></canvas>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-title">
+                <h5>Detalle del Reporte</h5>
+            </div>
+            <div class="card-body" id="detalleReporte">
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" value="@Url.Action("EjecucionPorHora", "Reportes")" id="ejecucionPorHora" />
+<input type="hidden" value="@Url.Action("listar", "Usuarios")" id="listarUsuarios" />
+@section Scripts{
+    <script src="~/lib/chart.js/Chart.min.js"></script>
+
+    <script src="~/js/reportes/reportes.js"></script>
+   
+    
+}
+
+

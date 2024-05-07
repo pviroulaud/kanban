@@ -1,0 +1,86 @@
+
+@{
+    ViewData["Title"] = "Administración de Usuarios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+</div>
+<div class="row d-none">
+    <div class="col">
+        <div class="card">
+            <div class="card-header p-2">
+                Filtros
+            </div>
+            <div class="card-body p-1">
+                <div class="row">
+                    <div class="col">
+                        <label for="txtFilterNombreUsuario" class="form-label mb-1">Nombre</label>
+                        <input type="text" class="form-control" id="txtFilterNombreUsuario">
+                    </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-secondary mt-4" id="btnBuscarUsuario"><i class="fas fa-search me-1"></i>Buscar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <button type="button" class="btn btn-primary float-end mt-1" id="btnNuevoUsuario"><i class="fas fa-plus-circle me-1"></i>Nuevo Usuario</button>
+        <table id="dt-dataUsuarios" class="display compact" style="width:100%">
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="modal-usuario" aria-labelledby="modalLbl" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="dialog">
+        <div class="modal-content">
+            <div class="modal-header pt-2 pb-2">
+                <h4 class="modal-title" id="modalLbl"> Usuario </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body pt-2 pb-2">
+                <div class="row mb-2">
+                    <label class="col-sm-3 col-form-label" for="txtNombreUsuario">Nombre:</label>
+                    <div class="col-sm-9">
+                        <input type="hidden" id="idUsuario">
+                        <input type="text" id="txtNombreUsuario" class="form-control" maxlength="50" required>
+                        <div id="validtxtNombreUsuario" class="invalid-feedback" style="display:none">
+                            Este campo es obligatorio
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label class="col-sm-3 col-form-label" for="txtcorreo">Correo:</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="txtcorreo" class="form-control" maxlength="50" required>
+                        <div id="validtxtcorreo" class="invalid-feedback" style="display:none">
+                            Este campo es obligatorio
+                        </div>
+                    </div>
+                </div>                    
+            </div>
+            <div class="modal-footer pt-2 pb-2">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button id="btnGuardarUsuario" type="button" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" value="@Url.Action("listar", "Usuarios")" id="listarUsuarios" />
+<input type="hidden" value="@Url.Action("nuevo", "Usuarios")" id="nuevoUsuario" />
+<input type="hidden" value="@Url.Action("eliminar", "Usuarios")" id="eliminarUsuario" />
+<input type="hidden" value="@Url.Action("obtener", "Usuarios")" id="obtenerUsuario" />
+<input type="hidden" value="@Url.Action("actualizar", "Usuarios")" id="actualizarUsuario" />
+@section Scripts{
+    <script src="~/js/usuarios/usuarios.js"></script>
+
+}
+
+
