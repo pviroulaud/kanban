@@ -71,8 +71,8 @@ function guardarTarea() {
                 usuarioResponsableId: $("#ddlResponsableTarea").val(),
                 incidenciaId: $("#idIncidencia").val(),
                 descripcion: $('#txtDescripcionTarea').val(),
-                estimacion: $('#txtEstimacionTarea').val(),
-                ejecucion: $('#txtEjecucionTarea').val(),
+                estimacion: $('#txtEstimacionTarea').val().replaceAll(".", ","),
+                //ejecucion: $('#txtEjecucionTarea').val().replaceAll(".", ","),
                 semanaDeEjecucionPlanificada: $('#txtsemanaDeEjecucionPlanificadaTarea').val().replaceAll("-W",""),
                 semanaDeEjecucionReal: $('#txtsemanaDeEjecucionRealTarea').val().replaceAll("-W", "")
 
@@ -112,8 +112,8 @@ function guardarTarea() {
                 usuarioResponsableId: $("#ddlResponsableTarea").val(),
                 incidenciaId: $("#idIncidencia").val(),
                 descripcion: $('#txtDescripcionTarea').val(),
-                estimacion: $('#txtEstimacionTarea').val(),
-                ejecucion: $('#txtEjecucionTarea').val(),
+                estimacion: $('#txtEstimacionTarea').val().replaceAll(".", ","),
+                //ejecucion: $('#txtEjecucionTarea').val().replaceAll(".", ","),
                 semanaDeEjecucionPlanificada: $('#txtsemanaDeEjecucionPlanificadaTarea').val().replaceAll("-W", ""),
                 semanaDeEjecucionReal: $('#txtsemanaDeEjecucionRealTarea').val().replaceAll("-W", "")
 
@@ -153,7 +153,7 @@ function completarFormTarea(datos) {
     $("#txtNombreTarea").val(datos.nombre);
     $("#ddlTipoTarea").val(datos.tipoTareaId);
     $("#ddlEstadoTarea").val(datos.estadoId);
-    datos.semanaDeEjecucionPlanificada.slice(0, 4) + "-W" + datos.semanaDeEjecucionPlanificada.slice(4)
+    
     $('#txtInformadorTarea').val(buscarEnSelect('ddlResponsableTarea', datos.usuarioCreadorId));
     $('#txtDescripcionTarea').val(datos.descripcion); 
     if (datos.semanaDeEjecucionPlanificada != null) $('#txtsemanaDeEjecucionPlanificadaTarea').val(datos.semanaDeEjecucionPlanificada.toString().slice(0, 4) + "-W" + datos.semanaDeEjecucionPlanificada.toString().slice(4));

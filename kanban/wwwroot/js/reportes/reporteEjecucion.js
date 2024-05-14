@@ -14,10 +14,23 @@ $(function () {
    
 });
 
-
+function validarRangoFecha() {
+    var d=$("#txtFechaDesde").val().replaceAll("-","");
+    var h = $("#txtFechaHasta").val().replaceAll("-", "");
+    if (d > h) {
+        return false;
+    }
+    else {
+        return true;
+    }
+}
 
 function obtenerReportePorDia() {
-    
+    $('#validtxtFechaDesde').hide();
+    if (validarRangoFecha() == false) {
+        $('#validtxtFechaDesde').show();
+        return;
+    }
     var arr = "";
     for (var n = 0; n<$('#ddlFiltroUsuarios').val().length; n++) {
         arr += $('#ddlFiltroUsuarios').val()[n] + ",";

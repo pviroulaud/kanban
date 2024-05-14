@@ -31,7 +31,7 @@
                         <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Incidencias</a>
-                            </li>
+                            </li>                            
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Tareas" asp-action="Index">Tareas</a>
                             </li>
@@ -41,7 +41,8 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end " aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Reportes" asp-action="EstimacionSemanalIndex">Planificacion Semanal</a></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Reportes" asp-action="EjecucionHoras">Ejecucion Horas</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Reportes" asp-action="EjecucionHoras">Ejecucion Horas</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="IncidenciasCerradas" asp-action="Index">Incidencias Cerradas</a></li>
                                 </ul>
                             </li>
                         <li class="nav-item dropdown ">
@@ -157,6 +158,26 @@
         </div>
     </div>
     <input type="hidden" value="@Url.Action("registrarTiempo", "Tareas")" id="registrarTiempo" />
+
+    <div class="modal fade" tabindex="-1" id="modal-actividad" aria-labelledby="modalLbl" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="dialog" id="dialogActividad">
+            <div class="modal-content">
+                <div class="modal-header pt-2 pb-2">
+                    <h4 class="modal-title" id="modalLbl"> Registro de Actividad </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body pt-2 pb-2">
+                    <div class="col-sm-12">
+                        <table id="dt-dataActividad" class="display compact" style="width:100%">
+                        </table>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
 
     <div id="spinner" class="overlay" style="display:none">
         <div  class="d-flex justify-content-center" style="top:45%">

@@ -148,6 +148,18 @@ namespace serviciosKanban.SRVC
             }
         }
 
+        public void cambiarEstadoTarea(int usuarioOperacionId,int tareaId,int estadoId)
+        {
+            var t = (from ta in _context.kbn_tarea where ta.id == tareaId && ta.estadoId!=estadoId select ta).FirstOrDefault();
+            if (t != null)
+            {
+                 t.estadoId=estadoId;
+                _context.kbn_tarea.Update(t);
+                _context.SaveChanges();
+
+                _log.registrarModificacion(usuarioOperacionId, "tarea", t.id, "{'id':"+t.id+",'estadoId':"+t.estadoId+"}");
+            }
+        }
         public int registrarTiempo(int usuarioOperacionId, registroTiempoDTO datos)
         {
 

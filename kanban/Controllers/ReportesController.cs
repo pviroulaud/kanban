@@ -43,6 +43,26 @@ namespace Kanban.Controllers
             return View();
         }
 
+        [HttpGet("ActividadIncidencia")]
+        [Authorize]
+        public IActionResult ActividadIncidencia(int id)
+        {
+
+            var a = _servicioReportes.reporteActividadIncidencia(id);
+
+            return Json(new { success = true, data = a });
+            //return Accepted();
+        }
+        [HttpGet("ActividadTarea")]
+        [Authorize]
+        public IActionResult ActividadTarea(int id)
+        {
+            var a = _servicioReportes.reporteActividadTarea(id);
+
+            return Json(new { success = true, data = a });
+            //return Accepted();
+        }
+
         [HttpGet("EstimacionSemanal")]
         [Authorize]
         public IActionResult EstimacionSemanal(filtroReporteSemanal filtro)
@@ -59,7 +79,7 @@ namespace Kanban.Controllers
             }
             
             //List<string> sem = new List<string>() { "2024-W19" };
-            var a =_servicioReportes.planificacionSemana(filtro.semana, usuarios);
+            var a =_servicioReportes.planificacionSemana(filtro.semana, filtro.semanaHasta, usuarios);
              
             return Json(new { success = true, data = a });
             //return Accepted();

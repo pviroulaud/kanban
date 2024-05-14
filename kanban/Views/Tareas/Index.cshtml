@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Tareas";
+    ViewData["Title"] = "Tablero de Tareas";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -48,10 +48,156 @@
     </div>
 </div>
 <div class="row">
-    <div class="col">
-        <button type="button" class="btn btn-primary float-end mt-1" id="btnNuevaTarea"><i class="fas fa-plus-circle me-1"></i>Nueva Tarea</button>
+    <div class="col-sm-12 text-end mb-1">
+        <button type="button" class="btn btn-primary mt-1" id="btnNuevaTarea"><i class="fas fa-plus-circle me-1"></i>Nueva Tarea</button>
+    </div>
+    <div class="col-sm-12 text-start mb-1 mt-1">
+        <button type="button" class="btn btn-primary d-none mt-1 toggleTablero" id="btnToggleTabla"><i id="iconoTabla" class="fas fa-table me-1"></i>Ver Tabla</button>
+        <button type="button" class="btn btn-primary  mt-1 toggleTablero" id="btnToggleTablero"><i id="iconoTablero" class=" fas fa-columns me-1"></i>Ver Tablero</button>
+    </div>
+    <div class="col-sm-12" id="visualizadorTabla">        
         <table id="dt-dataTareas" class="display compact" style="width:100%">
         </table>
+    </div>
+    <div class="col-sm-12 d-none" id="visualizadorTablero">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="card card-row card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            Backlog
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="card card-info card-outline">
+                            <div class="card-header">
+                                <h5 class="card-title">Create Labels</h5>
+                                <div class="card-tools">
+                                    <a href="#" class="btn btn-tool btn-link">#3</a>
+                                    <a href="#" class="btn btn-tool">
+                                        <i class="fas fa-pen"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="customCheckbox1" disabled="">
+                                    <label for="customCheckbox1" class="custom-control-label">Bug</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="customCheckbox2" disabled="">
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card card-row card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            Por Hacer
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="card card-info card-outline">
+                            <div class="card-header">
+                                <h5 class="card-title">Create Labels</h5>
+                                <div class="card-tools">
+                                    <a href="#" class="btn btn-tool btn-link">#3</a>
+                                    <a href="#" class="btn btn-tool">
+                                        <i class="fas fa-pen"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="customCheckbox1" disabled="">
+                                    <label for="customCheckbox1" class="custom-control-label">Bug</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="customCheckbox2" disabled="">
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card card-row  card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            En Curso
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="card card-info card-outline">
+                            <div class="card-header">
+                                <h5 class="card-title">Create Labels</h5>
+                                <div class="card-tools">
+                                    <a href="#" class="btn btn-tool btn-link">#3</a>
+                                    <a href="#" class="btn btn-tool">
+                                        <i class="fas fa-pen"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="customCheckbox1" disabled="">
+                                    <label for="customCheckbox1" class="custom-control-label">Bug</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="customCheckbox2" disabled="">
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 ">
+                <div class="card card-row card-success">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            Finalizado
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="card card-info card-outline">
+                            <div class="card-header">
+                                <h5 class="card-title">Create Labels</h5>
+                                <div class="card-tools">
+                                    <a href="#" class="btn btn-tool btn-link">#3</a>
+                                    <a href="#" class="btn btn-tool">
+                                        <i class="fas fa-pen"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="customCheckbox1" disabled="">
+                                    <label for="customCheckbox1" class="custom-control-label">Bug</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="customCheckbox2" disabled="">
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
     </div>
 </div>
 
@@ -204,6 +350,8 @@
 <input type="hidden" value="@Url.Action("actualizarTarea", "Home")" id="actualizarTarea" />
 <input type="hidden" value="@Url.Action("listarTipoTarea", "Home")" id="listarTipoTarea" />
 <input type="hidden" value="@Url.Action("listar", "Tareas")" id="listarTareas" />
+
+<input type="hidden" value="@Url.Action("ActividadTarea", "Reportes")" id="actividadTarea" />
 
 @section Scripts{
     <script src="~/js/incidencias/incidencias.js"></script>

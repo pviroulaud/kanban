@@ -81,7 +81,7 @@ namespace entidadesKanban.modelo
             modelBuilder.Entity<kbn_registroTiempo>(entity =>
             {
                 entity.Property(e => e.ejecucion)
-                    .HasColumnType("decimal(18, 0)")
+                    .HasColumnType("decimal(18, 2)")
                     .HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.fechaEjecucion).HasColumnType("datetime");
@@ -92,11 +92,11 @@ namespace entidadesKanban.modelo
             modelBuilder.Entity<kbn_tarea>(entity =>
             {
                 entity.Property(e => e.ejecucion)
-                    .HasColumnType("decimal(18, 0)")
+                    .HasColumnType("decimal(18, 2)")
                     .HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.estimacion)
-                    .HasColumnType("decimal(18, 0)")
+                    .HasColumnType("decimal(18, 2)")
                     .HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.fechaCreacion).HasColumnType("datetime");

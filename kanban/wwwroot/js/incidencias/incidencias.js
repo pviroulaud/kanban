@@ -14,6 +14,26 @@ $(function () {
     $('#btnGuardarIncidencia').click(function(){
         guardarIncidencia()
     });
+
+    $('.toggleTablero').click(function () {
+        if ($('#btnToggleTabla').hasClass('d-none')) {
+            // Ver Tablero
+            $('#visualizadorTabla').addClass('d-none');
+            $('#visualizadorTablero').removeClass('d-none');
+            $('#btnToggleTabla').removeClass('d-none');
+            $('#btnToggleTablero').addClass('d-none');
+
+        }
+        else {
+            // Ver Tabla
+            $('#visualizadorTabla').removeClass('d-none');
+            $('#visualizadorTablero').addClass('d-none');
+            $('#btnToggleTabla').addClass('d-none');
+            $('#btnToggleTablero').removeClass('d-none');
+        }
+        
+        
+    });
     
 
     grillaInsidencias();
@@ -155,7 +175,8 @@ function grillaInsidencias(){
                 {
                     targets:
                         9, render: function (data, type, full, meta) {
-                            return '<button data="' + data + '" class="btn btn-primary btn-sm editData" tabindex="0" title="Editar"><i class="fas fa-edit"></i></button>';
+                        return '<button data="' + data + '" class="btn btn-primary btn-sm editData" tabindex="0" title="Editar"><i class="fas fa-edit"></i></button>  '+
+                        '<button data="' + data + '" class="ml-1 btn btn-primary btn-sm verActividad" tabindex="0" title="Ver Actividad"><i class="fas fa-hourglass-end"></i></button>';
                     },
                 }
             ],
@@ -163,9 +184,37 @@ function grillaInsidencias(){
                 hideSpinner();borrarSomee();
                 $(".editData").click(function () {
                     obtenerIncidencia($(this).attr('data'));
-                });            
+                });       
+                $(".verActividad").click(function () {
+                    verActividadIncidencia($(this).attr('data'));
+                });
             }
         });
+}
+
+function verActividadIncidencia(incidenciaId) {
+    $.ajax({
+        type: 'GET',
+        url: $("#actividadIncidencia").val(),
+        data: { id: incidenciaId },
+        dataType: 'json',
+        crossDomain: true,
+        beforeSend: function (xhr) {
+            var token = sessionStorage.getItem("tkn");
+            if (token != undefined) {
+                xhr.setRequestHeader("Authorization", "Bearer " + token);
+            }
+        },
+    }).done(function (result) {
+        hideSpinner(); borrarSomee();
+        if (result.success) {
+
+            completarActividad(result.data);
+
+        } else {
+            Swal.fire("Información", "No se pudo obtener la incidencia.", "error");
+        }
+    });
 }
 
 function mostarDetalleFila(datos) {
@@ -317,7 +366,7 @@ function completarFormIncidencia(datos){
     $('#txtDescripcion').val(datos.descripcion);
     
     $('#txtInformador').val(datos.nombreCreador);
-    $('#ddlResponsable').val(datos.usuarioResponsableId);
+    $('#ddlResponsable').val(datos.usuarioResponsableId).trigger('change');
     $('#ddlEstado').val(datos.estadoId);
     $('#txtEstimacion').val(datos.estimacionTotal);
     $('#txtEjecucion').val(datos.ejecucionTotal);

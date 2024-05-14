@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace serviciosKanban
@@ -25,6 +26,60 @@ namespace serviciosKanban
             _log = log;            
         }
 
+
+        public List<reporteActividadDTO> reporteActividadIncidencia(int incidenciaId)
+        {
+
+            return (from r in _context.kbn_registroTiempo
+                    join t in _context.kbn_tarea on r.tareaId equals t.id
+                    join i in _context.kbn_incidencia on t.incidenciaId equals i.id
+                    join u in _context.kbn_usuario on r.usuarioId equals u.id
+                    join e in _context.kbn_estado on r.estadoTareaId equals e.id
+            where
+                    t.incidenciaId == incidenciaId
+                    select new reporteActividadDTO()
+                    {
+                        id = r.id,
+                        incidenciaId = t.incidenciaId,
+                        nombreIncidencia = i.nombre,
+                        usuarioId = r.usuarioId,
+                        nombreUsuario = u.nombre,
+                        tareaId = t.id,
+                        nombreTarea = t.nombre,
+                        estadoTareaId = r.estadoTareaId,
+                        nombreEstadoTarea = e.nombre,
+                        ejecucion = r.ejecucion,
+                        descripcion = r.descripcion,
+                        fechaEjecucion = r.fechaEjecucion,
+                        fechaRegistro = r.fechaRegistro
+                    }).OrderByDescending(x=>x.fechaRegistro).ToList();
+        }
+        public List<reporteActividadDTO> reporteActividadTarea(int tareaId)
+        {
+            return (from r in _context.kbn_registroTiempo
+                      join t in _context.kbn_tarea on r.tareaId equals t.id
+                      join i in _context.kbn_incidencia on t.incidenciaId equals i.id
+                      join u in _context.kbn_usuario on r.usuarioId equals u.id
+                      join e in _context.kbn_estado on r.estadoTareaId equals e.id
+                      where
+                      t.id == tareaId
+                      select new reporteActividadDTO()
+                      {
+                          id=r.id,
+                          incidenciaId=t.incidenciaId,
+                          nombreIncidencia=i.nombre,
+                          usuarioId =r.usuarioId,
+                          nombreUsuario = u.nombre,
+                          tareaId=t.id,
+                          nombreTarea=t.nombre,
+                          estadoTareaId=r.estadoTareaId,
+                          nombreEstadoTarea = e.nombre,
+                          ejecucion=r.ejecucion,
+                          descripcion=r.descripcion,
+                          fechaEjecucion=r.fechaEjecucion,
+                          fechaRegistro=r.fechaRegistro                          
+                      }).OrderByDescending(x => x.fechaRegistro).ToList();
+        }
         public reporteSemanaDTO planificacionSemana(string semana,List<int> usuarioId)
         {
             reporteSemanaDTO ret = new reporteSemanaDTO();
@@ -62,6 +117,60 @@ namespace serviciosKanban
             return ret;
         }
 
+        public List<reporteSemanaDTO> planificacionSemana(string semana,string semanaHasta, List<int> usuarioId)
+        {
+            List<reporteSemanaDTO> ret = new List<reporteSemanaDTO>();
+
+            int sem = Convert.ToInt32(semana.Replace("-W", ""));
+            int semHasta = Convert.ToInt32(semanaHasta.Replace("-W", ""));
+
+            List<int?> semanas = (from t in _context.kbn_tarea
+                           where
+                           t.semanaDeEjecucionPlanificada >= sem &&
+                           t.semanaDeEjecucionPlanificada <= semHasta
+                           select t.semanaDeEjecucionPlanificada).Distinct().ToList();
+
+        
+
+            foreach (var item in semanas)
+            {
+                reporteSemanaDTO reporteSem = new reporteSemanaDTO();
+
+                var regSemana = (from t in _context.kbn_tarea
+                                 join i in _context.kbn_incidencia on t.incidenciaId equals i.id
+                                 where
+                                 ((usuarioId.Count == 0 || t.usuarioResponsableId == null) ? (t.id > 0) : (usuarioId.Contains(t.usuarioResponsableId ?? 0))) &&
+                                 t.semanaDeEjecucionPlanificada == item
+                                 select new detalleReporteSemanaDTO()
+                                 {
+
+                                     incidenciaId = t.incidenciaId,
+                                     nombreIncidencia = i.nombre,
+                                     tareaId = t.id,
+                                     nombreTarea = t.nombre,
+                                     usuarioResponsableId = t.usuarioResponsableId,
+                                     nombreUsuarioResponsable = ((t.usuarioResponsableId == null) ? ("-") : (from u in _context.kbn_usuario where u.id == t.usuarioResponsableId select u.nombre).FirstOrDefault() ?? "-"),
+                                     estimacion = t.estimacion
+
+                                 }).ToList();
+                reporteSem.detalle.AddRange(regSemana);
+                
+
+                reporteSem.semanaEjecucionPlanificada = item.ToString().Substring(0,4) + "/" + item.ToString().Substring(4,2);
+                reporteSem.estimacionTotal = (from t in regSemana select t.estimacion).Sum();
+
+                string[] yyyyWss = semana.Split("-W", StringSplitOptions.RemoveEmptyEntries);
+                reporteSem.fechaDesde = ISOWeek.ToDateTime(Convert.ToInt32(yyyyWss[0]), Convert.ToInt32(yyyyWss[1]), DayOfWeek.Monday);
+                yyyyWss = semanaHasta.Split("-W", StringSplitOptions.RemoveEmptyEntries);
+                reporteSem.fechaHasta = ISOWeek.ToDateTime(Convert.ToInt32(yyyyWss[0]), Convert.ToInt32(yyyyWss[1]), DayOfWeek.Sunday);
+
+                ret.Add(reporteSem);
+            }
+
+
+
+            return ret;
+        }
 
         public reportePeriodoDTO horasPorDia(DateTime fechaDesde, DateTime fechaHasta, List<int> usuarioId, bool incluirEstadoCerrado)
         {

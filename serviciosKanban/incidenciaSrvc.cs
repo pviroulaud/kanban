@@ -53,13 +53,38 @@ namespace serviciosKanban.SRVC
             return lst.ToList();
         }
 
-        public List<idNombreDTO> listarNombreIncidencias(int proyectoId)
+        public List<idNombreDTO> listarNombreIncidenciasCerradas(int proyectoId)
         {
-            return _mapper.Map<List<idNombreDTO>>(from i in _context.kbn_incidencia where i.proyectoId==proyectoId select i);
+            return _mapper.Map<List<idNombreDTO>>(from i in _context.kbn_incidencia
+                                                  where
+                                                  i.proyectoId == proyectoId &&
+                                                   i.estadoId == 6
+
+                                                  select i);
         }
-        public List<idNombreDTO> listarNombreIncidencias()
+        public List<idNombreDTO> listarNombreIncidenciasCerradas()
         {
-            return _mapper.Map<List<idNombreDTO>>(from i in _context.kbn_incidencia where i.id > 0 select i);
+            return _mapper.Map<List<idNombreDTO>>(from i in _context.kbn_incidencia
+                                                  where
+                                                  i.estadoId == 6
+                                                  select i);
+        }
+
+        public List<idNombreDTO> listarNombreIncidencias(int proyectoId,bool incluirCerradas=false)
+        {
+            return _mapper.Map<List<idNombreDTO>>(from i in _context.kbn_incidencia 
+                                                  where 
+                                                  i.proyectoId==proyectoId  &&
+                                                  (incluirCerradas? i.id>0 : i.estadoId!=6)
+                                                  
+                                                  select i);
+        }
+        public List<idNombreDTO> listarNombreIncidencias(bool incluirCerradas = false)
+        {
+            return _mapper.Map<List<idNombreDTO>>(from i in _context.kbn_incidencia 
+                                                  where
+                                                  (incluirCerradas ? i.id > 0 : i.estadoId != 6)
+                                                  select i);
         }
         public List<incidenciaCompletaDTO> listar()
         {
@@ -94,7 +119,7 @@ namespace serviciosKanban.SRVC
             return lst;
         }
 
-        public List<incidenciaCompletaDTO> listar(filtroBusquedaDTO filtros)
+        public List<incidenciaCompletaDTO> listar(filtroBusquedaDTO filtros, bool incluirCerradas = false)
         {
 
             var lst = (from i in _context.kbn_incidencia
@@ -104,6 +129,7 @@ namespace serviciosKanban.SRVC
                        join t in _context.kbn_tarea on i.id equals t.incidenciaId into incid
                        from inciden in incid.DefaultIfEmpty()
                        where
+                       (incluirCerradas ? i.id > 0 : i.estadoId != 6) &&
                        ((filtros.estadoIncidenciaId.Count == 0) ? (i.id > 0) : (filtros.estadoIncidenciaId.Contains(i.estadoId.ToString()))) &&
                        ((filtros.proyectoId.Count == 0) ? (i.id > 0) : (filtros.proyectoId.Contains( i.proyectoId.ToString()))) &&
                        ((filtros.tipoIncidenciaId.Count == 0) ? (i.id > 0) : (filtros.tipoIncidenciaId.Contains(i.tipoIncidenciaId.ToString()))) &&
@@ -228,6 +254,14 @@ namespace serviciosKanban.SRVC
                 _context.kbn_incidencia.Update(i);
                 _context.SaveChanges();
 
+                if (i.estadoId==6)
+                {
+                    var tareas = _tareaSrvc.listar(i.id);
+                    foreach (var item in tareas)
+                    {
+                        _tareaSrvc.cambiarEstadoTarea(usuarioOperacionId, item.id, i.estadoId);
+                    }
+                }
                 _log.registrarModificacion(usuarioOperacionId,"incidencia",i.id,JsonSerializer.Serialize(datos));
                 return i.id;
             }

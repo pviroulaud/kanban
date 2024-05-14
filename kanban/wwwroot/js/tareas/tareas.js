@@ -8,6 +8,26 @@
         $('#ddlProyectoTarea').trigger('change');
     });
 
+    $('.toggleTablero').click(function () {
+        if ($('#btnToggleTabla').hasClass('d-none')) {
+            // Ver Tablero
+            $('#visualizadorTabla').addClass('d-none');
+            $('#visualizadorTablero').removeClass('d-none');
+            $('#btnToggleTabla').removeClass('d-none');
+            $('#btnToggleTablero').addClass('d-none');
+
+        }
+        else {
+            // Ver Tabla
+            $('#visualizadorTabla').removeClass('d-none');
+            $('#visualizadorTablero').addClass('d-none');
+            $('#btnToggleTabla').addClass('d-none');
+            $('#btnToggleTablero').removeClass('d-none');
+        }
+
+
+    });
+
     grillaTareas();
     $('.filtroBusqueda').change(function () {
         $('#dt-dataTareas').DataTable().ajax.reload();
@@ -39,7 +59,7 @@ function grillaTareas() {
         { title: "Estado", id: "nombreEstadoTarea", data: "nombreEstadoTarea", type: "text", className: 'text-center' },
         { title: "Responsable", id: "nombreUsuarioResponsable", data: "nombreUsuarioResponsable", type: "text", className: 'text-center' },
         { title: "Ejecucion", id: "id", data: null, type: "readonly", className: 'text-center' },
-        { title: "Ejecicion/Estimacion", id: "id", data: null, type: "readonly", orderable: false, searchable: false, width: 65, className: 'text-center' },
+        { title: "Ejecucion/Estimacion", id: "id", data: null, type: "readonly", orderable: false, searchable: false, width: 65, className: 'text-center' },
         { title: "Acciones", id: "id", data: "id", type: "readonly", orderable: false, searchable: false, width: 65, className: 'text-center' },
     ];
     /*data table */
@@ -103,7 +123,8 @@ function grillaTareas() {
             {
                 targets:
                     9, render: function (data, type, full, meta) {
-                        return '<button data="' + data + '" class="btn btn-primary btn-sm editData" tabindex="0" title="Editar"><i class="fas fa-edit"></i></button>';
+                    return '<button data="' + data + '" class="btn btn-primary btn-sm editData" tabindex="0" title="Editar"><i class="fas fa-edit"></i></button>  '+
+                        '<button data="' + data + '" class="ml-1 btn btn-primary btn-sm verActividad" tabindex="0" title="Ver Actividad"><i class="fas fa-hourglass-end"></i></button>';
                     },
             }
         ],
@@ -112,10 +133,37 @@ function grillaTareas() {
             $(".editData").click(function () {
                 obtenerTarea($(this).attr('data'));
             });
+            $(".verActividad").click(function () {
+                verActividadTarea($(this).attr('data'));
+            });
         }
     });
 }
 
+function verActividadTarea(tareaId) {
+    $.ajax({
+        type: 'GET',
+        url: $("#actividadTarea").val(),
+        data: { id: tareaId },
+        dataType: 'json',
+        crossDomain: true,
+        beforeSend: function (xhr) {
+            var token = sessionStorage.getItem("tkn");
+            if (token != undefined) {
+                xhr.setRequestHeader("Authorization", "Bearer " + token);
+            }
+        },
+    }).done(function (result) {
+        hideSpinner(); borrarSomee();
+        if (result.success) {
+
+            completarActividad(result.data);
+
+        } else {
+            Swal.fire("Información", "No se pudo obtener la incidencia.", "error");
+        }
+    });
+}
 
 function nuevaTarea() {
     clearFormTarea();
@@ -201,8 +249,8 @@ function guardarTarea() {
                 usuarioResponsableId: $("#ddlResponsableTarea").val(),
                 incidenciaId: $("#ddlIncidenciaTarea").val(),
                 descripcion: $('#txtDescripcionTarea').val(),
-                estimacion: $('#txtEstimacionTarea').val(),
-                ejecucion: $('#txtEjecucionTarea').val(),
+                estimacion: $('#txtEstimacionTarea').val().replaceAll(".", ","),
+                //ejecucion: $('#txtEjecucionTarea').val().replaceAll(".", ","),
                 semanaDeEjecucionPlanificada: $('#txtsemanaDeEjecucionPlanificadaTarea').val().replaceAll("-W", ""),
                 semanaDeEjecucionReal: $('#txtsemanaDeEjecucionRealTarea').val().replaceAll("-W", "")
 
@@ -242,8 +290,8 @@ function guardarTarea() {
                 usuarioResponsableId: $("#ddlResponsableTarea").val(),
                 incidenciaId: $("#ddlIncidenciaTarea").val(),
                 descripcion: $('#txtDescripcionTarea').val(),
-                estimacion: $('#txtEstimacionTarea').val(),
-                ejecucion: $('#txtEjecucionTarea').val(),
+                estimacion: $('#txtEstimacionTarea').val().replaceAll(".", ","),
+                //ejecucion: $('#txtEjecucionTarea').val().replaceAll(".", ","),
                 semanaDeEjecucionPlanificada: $('#txtsemanaDeEjecucionPlanificadaTarea').val().replaceAll("-W", ""),
                 semanaDeEjecucionReal: $('#txtsemanaDeEjecucionRealTarea').val().replaceAll("-W", "")
 

@@ -6,6 +6,23 @@ using System.Threading.Tasks;
 
 namespace serviciosKanban.DTO
 {
+    public class reporteActividadDTO
+    {
+        public int id { get; set; }
+        public int incidenciaId { get; set; }
+        public string nombreIncidencia { get; set; }        
+        public int usuarioId { get; set; }
+        public string nombreUsuario { get; set; }
+        public int tareaId { get; set; }
+        public string nombreTarea { get; set; }
+        public int estadoTareaId { get; set; }
+        public string nombreEstadoTarea { get; set; }
+        public decimal? ejecucion { get; set; }
+        public string? descripcion { get; set; }
+        public DateTime fechaEjecucion { get; set; }
+        public DateTime fechaRegistro { get; set; }
+
+    }
     public class reporteDiarioDTO
     {
         public DateTime fecha { get; set; }

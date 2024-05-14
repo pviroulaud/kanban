@@ -1,6 +1,7 @@
 $(function () {
     var a = new Date();
     $("#txtSemana").val(obtenerSemana(a));
+    $("#txtSemanaHasta").val(obtenerSemana(a));
     
 
    
@@ -29,7 +30,11 @@ function obtenerSemana(fecha) {
 }
 
 function obtenerReporteSemana() {
-    
+    $('#validtxtSemana').hide();
+    if (validarRangoFecha() == false) {
+        $('#validtxtSemana').show();
+        return;
+    }
     var arr = "";
     for (var n = 0; n<$('#ddlFiltroUsuarios').val().length; n++) {
         arr += $('#ddlFiltroUsuarios').val()[n] + ",";
@@ -39,7 +44,8 @@ function obtenerReporteSemana() {
         type: 'GET',
         url: $("#estimacionSemanal").val(),
         data: {
-            semana:$('#txtSemana').val(),            
+            semana: $('#txtSemana').val(),  
+            semanaHasta: $('#txtSemanaHasta').val(),  
             usuarioId:arr
         },
         dataType: 'json',
@@ -54,61 +60,84 @@ function obtenerReporteSemana() {
         hideSpinner();borrarSomee();borrarSomee();
 
         if (result.success) {
-            $('#infoSemana').html($("#txtSemana").val().slice($("#txtSemana").val().indexOf("-W"),2));
-            $('#infoDesde').html(result.data.fechaDesde);
-            $('#infoHasta').html(result.data.fechaHasta);
-            
-            $('#infoEestimacion').html(result.data.estimacionTotal);            
-           
-            var us = "";
-            if ($('#ddlFiltroUsuarios').val().length == 0) {
-                us = "TODOS"
-            }
-            else {
-                for (var n = 0; n < $('#ddlFiltroUsuarios').val().length; n++) {
-                    us += buscarEnSelect('ddlFiltroUsuarios', $('#ddlFiltroUsuarios').val()[n]) + ", "
-                }
-            }            
-            $('#infoUsuarios').html(us);
+            if (result.data.length > 0) {
+                $('#infoSemana').html($("#txtSemana").val().replaceAll("-W", "/") + " a " + $("#txtSemanaHasta").val().replaceAll("-W", "/"));
+                $('#infoDesde').html(result.data[0].fechaDesde.slice(0, result.data[0].fechaDesde.indexOf("T")));
+                $('#infoHasta').html(result.data[0].fechaHasta.slice(0, result.data[0].fechaHasta.indexOf("T")));
 
-            detalleReporte('detalleReporte', result.data)         
-            
-            graficoTorta('graficoTotales', ['Estimado', 'Sin Asignacion'],
-                [result.data.estimacionTotal, 80],
-                ['#00a65a', '#f56954'])
+                
+                
+                
+
+                var us = "";
+                if ($('#ddlFiltroUsuarios').val().length == 0) {
+                    us = "TODOS"
+                }
+                else {
+                    for (var n = 0; n < $('#ddlFiltroUsuarios').val().length; n++) {
+                        us += buscarEnSelect('ddlFiltroUsuarios', $('#ddlFiltroUsuarios').val()[n]) + ", "
+                    }
+                }
+                $('#infoUsuarios').html(us);
+
+                var totalHoras=detalleReporteSemana('detalleReporte', result.data)
+                $('#infoEestimacion').html(totalHoras);
+                $('#infoHsPeriodo').html(80 * result.data.length);
+
+                graficoTorta('graficoTotales', ['Estimado', 'Sin Asignacion'],
+                    [totalHoras, 80 * result.data.length],
+                    ['#00a65a', '#f56954'])
+            }
+
         } else {
             Swal.fire("Información", "No se pudo obtener la tarea.", "error");
         }
     });
 }
 
-function detalleReporte(contenedor, data) {
-    var _html = '';  
+function validarRangoFecha() {
 
-    for (var j = 0; j < data.detalle.length; j++) {
-        _html += '<tr>'
-        if (j == 0) {
-            _html += '  <td style="vertical-align: middle;" rowspan="' + data.detalle.length + '">' + data.semanaEjecucionPlanificada + '</td>'
-        }
-            
-
-        _html += '  <td>' + data.detalle[j].nombreIncidencia + '</td>'
-        _html += '  <td>' + data.detalle[j].nombreTarea + '</td>'        
-        _html += '  <td>' + buscarEnSelect('ddlFiltroUsuarios', data.detalle[j].usuarioResponsableId) + '</td>'
-        _html += '  <td>' + data.detalle[j].estimacion + '</td>'
-        
-
-        if (j == 0) {
-            _html += '  <td style="vertical-align: middle;" rowspan="' + data.detalle.length + '">' + data.estimacionTotal + '</td>'            
-        }
-            
-        _html += '</tr>'
+    var d= parseInt($("#txtSemana").val().replaceAll("-W",""));
+    var h = parseInt($("#txtSemanaHasta").val().replaceAll("-W", ""));
+    if (d > h) {
+        return false;
     }
+    else {
+        return true;
+    }
+}
+
+function detalleReporteSemana(contenedor, data) {
+    var _html = '';
+    var total = 0;
+    for (var n = 0; n < data.length; n++) {
+        for (var j = 0; j < data[n].detalle.length; j++) {
+            _html += '<tr>'
+            if (j == 0) {
+                _html += '  <td style="vertical-align: middle;" rowspan="' + data[n].detalle.length + '">' + data[n].semanaEjecucionPlanificada + '</td>'
+            }
+            total += data[n].detalle[j].estimacion;
+
+            _html += '  <td>' + data[n].detalle[j].nombreIncidencia + '</td>'
+            _html += '  <td>' + data[n].detalle[j].nombreTarea + '</td>'
+            _html += '  <td>' + buscarEnSelect('ddlFiltroUsuarios', data[n].detalle[j].usuarioResponsableId) + '</td>'
+            _html += '  <td>' + data[n].detalle[j].estimacion + '</td>'
+
+
+            if (j == 0) {
+                _html += '  <td style="vertical-align: middle;" rowspan="' + data[n].detalle.length + '">' + data[n].estimacionTotal + '</td>'
+            }
+
+            _html += '</tr>'
+        }
+    }
+   
 
         
         
     
     $('#tabla').html(_html)
+    return total;
     //rowspan="' + data.detalleDiario[n].tareas.length + '"
 
     //$('#' + contenedor).html(JSON.stringify(data));

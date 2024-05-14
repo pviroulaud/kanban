@@ -16,6 +16,7 @@ namespace serviciosKanban.SRVC
         int registrarTiempo(int usuarioOperacionId, registroTiempoDTO datos);
         bool eliminar(int usuarioOperacionId,int id);
 
+        void cambiarEstadoTarea(int usuarioOperacionId, int tareaId, int estadoId);
         tareaDTO? obtener(int id);
     }
     

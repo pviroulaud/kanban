@@ -20,7 +20,8 @@ namespace serviciosKanban.DTO
     }
     public class filtroReporteSemanal
     {
-        public string semana { get; set; }        
+        public string semana { get; set; }
+        public string semanaHasta { get; set; }
         public string usuarioId { get; set; } = "";
         
     }

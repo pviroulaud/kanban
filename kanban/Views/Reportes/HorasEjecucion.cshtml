@@ -22,6 +22,9 @@
                     <div class="col-sm-2">
                         <label class="col-sm-12 col-form-label" for="txtFechaDesde">Desde:</label>
                         <input type="date" id="txtFechaDesde" class="form-control text-center">
+                        <div id="validtxtFechaDesde" class="invalid-feedback" style="display:none">
+                            El campo Fecha Desde debe ser anterior al campo Fecha Hasta
+                        </div>
                     </div>
                     <div class="col-sm-2">
                         <label class="col-sm-12 col-form-label" for="txtFechaHasta">Hasta:</label>
@@ -72,14 +75,15 @@
                         <li>
                             <strong>Visualizando Tareas/Incidencias Cerradas: </strong><span id ="infoCerrados">-</span>
                         </li>
-                        <li>
-                            <strong>Usuarios: </strong><span id="infoUsuarios">-</span>
-                        </li>
+                        
                         <li>
                             <strong>Total Horas Ejecucion: </strong><span id="infoEjecucion">-</span>
                         </li>
                         <li>
                             <strong>Total Horas Bloqueos: </strong><span id="infoBloqueo">-</span>
+                        </li>
+                        <li>
+                            <strong>Usuarios: </strong><span id="infoUsuarios">-</span>
                         </li>
                     </ul>
                 </div>

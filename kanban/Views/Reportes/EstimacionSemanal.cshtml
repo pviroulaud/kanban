@@ -20,10 +20,17 @@
                 <div class="row">
 
                     <div class="col-sm-4">
-                        <label class="col-sm-12 col-form-label" for="txtSemana">Semana:</label>
+                        <label class="col-sm-12 col-form-label" for="txtSemana">Semana Desde:</label>
                         <input type="week" id="txtSemana" class="form-control text-center">
+                        <div id="validtxtSemana" class="invalid-feedback" style="display:none">
+                            El campo Semana Desde debe ser anterior al campo Semana Hasta
+                        </div>
                     </div>
-                                        
+                    <div class="col-sm-4">
+                        <label class="col-sm-12 col-form-label" for="txtSemanaHasta">Semana Hasta:</label>
+                        <input type="week" id="txtSemanaHasta" class="form-control text-center">
+                    </div>
+                    
                     <div class="col-sm-4">
                         <label class="col-sm-12 col-form-label" for="ddlFiltroUsuarios">Usuario:</label>
                         <select multiple class="form-control " id="ddlFiltroUsuarios" style="width:100%">
@@ -57,15 +64,16 @@
                         </li>
                         <li>
                             <strong>Hasta: </strong><span id="infoHasta">-</span>
-                        </li>
-
+                        </li>                        
                         <li>
-                            <strong>Usuarios: </strong><span id="infoUsuarios">-</span>
+                            <strong>Total Horas Periodo: </strong><span id="infoHsPeriodo">-</span>
                         </li>
                         <li>
                             <strong>Total Horas Estimacion: </strong><span id="infoEestimacion">-</span>
                         </li>
-
+                        <li>
+                            <strong>Usuarios: </strong><span id="infoUsuarios">-</span>
+                        </li>
                     </ul>
                 </div>
             </div>
